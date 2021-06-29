@@ -5,7 +5,7 @@ import useStyles from './NavbarStyles'
 
 import logo from '../../assets/img/commerce.jpg'
 
-const Navbar = () => {
+const Navbar = ({ totalItems }) => {
   const styles = useStyles()
 
   return (
@@ -19,7 +19,7 @@ const Navbar = () => {
           <div className={styles.grow} />
           <div className={styles.button}>
             <IconButton aria-label='Zeisch den Schubkarren Inhalt' color='inherit'>
-              <Badge badgeContent={2} color='secondary'>
+              <Badge badgeContent={totalItems} color='secondary'>
                 <ShoppingCart />
               </Badge>
             </IconButton>
