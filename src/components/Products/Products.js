@@ -8,6 +8,9 @@ import useStyles from './ProductsStyles'
 
 const Products = ({ products, onAddToCart }) => {
   const styles = useStyles()
+
+  if (!products.length) return <p>Lade...</p>
+
   return (
     <main className={styles.content}>
       <div className={styles.toolbar} />

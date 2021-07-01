@@ -3,11 +3,14 @@ import { Typography, Button, Card, CardActions, CardContent, CardMedia } from '@
 
 import useStyles from './CartItemSytles'
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
   const styles = useStyles()
 
+  const handleUpdateCartQty = (lineItemId, newQuantity) => onUpdateCartQty(lineItemId, newQuantity)
+  const handleRemoveFromCart = (lineItemId) => onRemoveFromCart(lineItemId)
+
   return (
-    <Card>
+    <Card className='cart-item'>
       <CardMedia className={styles.media} image={item.media.source} alt={item.name} />
       <CardContent className={styles.cardContent}>
         <Typography variant='h4'>{item.name}</Typography>
@@ -15,11 +18,11 @@ const CartItem = ({ item }) => {
       </CardContent>
       <CardActions className={styles.cartActions}>
         <div className={styles.buttons}>
-          <Button type='button' size='small'>-</Button>
-          <Typography>{item.quantity}</Typography>
-          <Button type='button' size='small'>+</Button>
+          <Button type='button' size='small' onClick={() => handleUpdateCartQty(item.id, item.quantity - 1)}>-</Button>
+          <Typography>&nbsp;{item.quantity}&nbsp;</Typography>
+          <Button type='button' size='small' onClick={() => handleUpdateCartQty(item.id, item.quantity + 1)}>+</Button>
         </div>
-        <Button variant='contained' type='button' color='secondary'>Entfernen</Button>
+        <Button variant='contained' type='button' color='secondary' onClick={() => handleRemoveFromCart(item.id)}>Entfernen</Button>
       </CardActions>
     </Card>
   )

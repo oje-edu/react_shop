@@ -7,13 +7,13 @@ import AddressForm from '../AddressForm'
 import PaymentForm from '../PaymentForm'
 import useStyles from './CheckoutStyles'
 
-const steps = ['Shipping address', 'Payment details']
+const steps = ['Lieferanschrift', 'Zahlungsinformation']
 
 const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
   const [checkoutToken, setCheckoutToken] = useState(null)
   const [activeStep, setActiveStep] = useState(0)
   const [shippingData, setShippingData] = useState({})
-  const classes = useStyles()
+  const styles = useStyles()
   const history = useHistory()
 
   const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -25,7 +25,7 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
         try {
           const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' })
 
-          setCheckoutToken(token);
+          setCheckoutToken(token)
         } catch {
           if (activeStep !== steps.length) history.push('/')
         }
@@ -35,7 +35,7 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
     }
   }, [cart])
 
-  const test = (data) => {
+  const next = (data) => {
     setShippingData(data)
 
     nextStep()
@@ -44,15 +44,15 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
   let Confirmation = () => (order.customer ? (
     <>
       <div>
-        <Typography variant='h5'>Thank you for your purchase, {order.customer.firstname} {order.customer.lastname}!</Typography>
-        <Divider className={classes.divider} />
-        <Typography variant='subtitle2'>Order ref: {order.customer_reference}</Typography>
+        <Typography variant="h5">Danke für Ihre Bestellung, {order.customer.firstname} {order.customer.lastname}!</Typography>
+        <Divider className={styles.divider} />
+        <Typography variant="subtitle2">Bestell Nr.: {order.customer_reference}</Typography>
       </div>
       <br />
-      <Button component={Link} variant='outlined' type='button' to='/'>Back to home</Button>
+      <Button component={Link} variant="outlined" type="button" to="/">Zur Startseite</Button>
     </>
   ) : (
-    <div className={classes.spinner}>
+    <div className={styles.spinner}>
       <CircularProgress />
     </div>
   ))
@@ -60,7 +60,7 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
   if (error) {
     Confirmation = () => (
       <>
-        <Typography variant='h5'>Error: {error}</Typography>
+        <Typography variant='h5'>Fehler: {error}</Typography>
         <br />
         <Button component={Link} variant='outlined' type='button' to='/'>Startseite</Button>
       </>
@@ -68,17 +68,17 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
   }
 
   const Form = () => (activeStep === 0
-    ? <AddressForm checkoutToken={checkoutToken} nextStep={nextStep} setShippingData={setShippingData} test={test} />
+    ? <AddressForm checkoutToken={checkoutToken} nextStep={nextStep} setShippingData={setShippingData} next={next} />
     : <PaymentForm checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout} />);
 
   return (
     <>
       <CssBaseline />
-      <div className={classes.toolbar} />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
+      <div className={styles.toolbar} />
+      <main className={styles.layout}>
+        <Paper className={styles.paper}>
           <Typography variant='h4' align='center'>Zur Kasse</Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
+          <Stepper activeStep={activeStep} className={styles.stepper}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>

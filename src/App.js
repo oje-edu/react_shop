@@ -24,26 +24,26 @@ const App = () => {
   }
 
   const handleAddToCart = async (productId, quantity) => {
-    const item = await commerce.cart.add(productId, quantity)
+    const { cart } = await commerce.cart.add(productId, quantity)
 
-    setCart(item.cart)
+    setCart(cart)
   }
   const handleUpdateCartQty = async (lineItemId, quantity) => {
-    const response = await commerce.cart.update(lineItemId, { quantity })
+    const { cart } = await commerce.cart.update(lineItemId, { quantity })
 
-    setCart(response.cart)
+    setCart(cart)
   }
 
   const handleRemoveFromCart = async (lineItemId) => {
-    const response = await commerce.cart.remove(lineItemId)
+    const { cart } = await commerce.cart.remove(lineItemId)
 
-    setCart(response.cart)
+    setCart(cart)
   }
 
   const handleEmptyCart = async () => {
-    const response = await commerce.cart.empty()
+    const { cart } = await commerce.cart.empty()
 
-    setCart(response.cart)
+    setCart(cart)
   }
 
   const refreshCart = async () => {
@@ -77,14 +77,14 @@ const App = () => {
         <CssBaseline />
         <Navbar totalItems={cart.total_items} handleDrawerToggle={handleDrawerToggle} />
         <Switch>
-          <Route exact path='/'>
-            <Products products={products} onAddToCart={handleAddToCart} handleUpdateCartQty />
-          </Route>
           <Route exact path='/cart'>
             <Cart cart={cart} onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart} onEmptyCart={handleEmptyCart} />
           </Route>
           <Route path='/checkout' exact>
             <Checkout cart={cart} order={order} onCaptureCheckout={handleCaptureCheckout} error={errorMessage} />
+          </Route>
+          <Route exact path='/'>
+            <Products products={products} onAddToCart={handleAddToCart} handleUpdateCartQty />
           </Route>
         </Switch>
       </div>
